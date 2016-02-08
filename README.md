@@ -1,2 +1,5 @@
 # eFFT
-"Easy Fast Fourier Transform"
+Easy Fast Fourier Transform
+
+##Authors
+T.Lloyd and S.Ismail
