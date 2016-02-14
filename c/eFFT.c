@@ -24,16 +24,16 @@ int * bitrev(int * order, unsigned int bits, int n){
 	int r;
 	int p;
 	for(int k=0;k<n;k++){
-	r=0;
-	p=0;
-	for(int i=bits-1;i>=0;i--){
-		int x=pow(2,i);
-		x&=k;
-		x>>=i;
-		p=x<<((bits-1)-(i));
-		r|=p;
+		r=0;
+		p=0;
+		for(int i=bits-1;i>=0;i--){
+			int x=pow(2,i);
+			x&=k;
+			x>>=i;
+			p=x<<((bits-1)-(i));
+			r|=p;
 		}
-	order[k]=r;
+		order[k]=r;
 	}
 	return order;
 }
