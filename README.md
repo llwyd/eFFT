@@ -3,10 +3,10 @@ The 'Easy Fast Fourier Transform' (eFFT) is a simple to use 1D radix-2 FFT libra
 ##Authors
 T.Lloyd and S.Ismail
 ##Background
-The library was originally developed as a learning exercise to understand and implement the famous algorithm developed by Cooley and Tukey. Although many existing and faster implementations of the FFT exist the authors wanted to develop their own version to better understand the algorithm and for use in projects.  Further information about how the FFT works can be found in the bibliography at the bottom.
+The library was originally developed as a learning exercise to understand and implement the famous algorithm developed by Cooley and Tukey. Although many existing and faster implementations of the FFT exist, the authors wanted to develop their own version to better understand the algorithm and for use in projects.  Further information about how the FFT works can be found in the bibliography at the bottom.
 
 ##How To Use
-The library contains two simple functions which are detailed below where the `input` is the data to under go transformation and 'length' is the number of data points.
+The library contains two simple functions which are detailed below where the `input` is the data to under go transformation and `length` is the number of data points.
 
 ###FFT
 `double complex * fft(double complex * input,int length);`
