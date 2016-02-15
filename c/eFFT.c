@@ -59,7 +59,6 @@ double complex * butterfly(complex double * input, int siglen, int norm, int sig
 	order = bitrev(order, bits, N);
 	for (int i = 1; i < bits + 1; i++){
 		inc = N / pow(2, i);
-		//order = bitrev(order, bits, N, i);
 		int * w = calloc(N/2,sizeof(int));
 		int incre = 0;
 		for (int j = 0; j < (N / 2); j++){
@@ -83,7 +82,6 @@ double complex * butterfly(complex double * input, int siglen, int norm, int sig
 	}
 	//Re-Order
 	complex double * spectra = calloc(N,sizeof(complex double));
-	//order = bitrev(order, bits, N, 1);
 	for (int p = 0; p < N; p++){
 		spectra[p] = output[order[p]]/normalise;
 	}
