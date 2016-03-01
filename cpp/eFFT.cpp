@@ -5,12 +5,8 @@
 
 #define M_PI 3.141592653589793
 
-eFFT::eFFT(){
-}
-
-eFFT::~eFFT(){
-}
-
+namespace eFFT
+{
 int * eFFT::rrotate(int * input,unsigned int bits, int n){
 	int lsb=0;
 	for(int i=0;i<n;i++){	
@@ -94,4 +90,5 @@ std::complex<double> * eFFT::fft(std::complex<double> * input,int length){
 std::complex<double> * eFFT::ifft(std::complex<double> * input,int length){
 	std::complex<double> * temporal = butterfly(input, length, length, 1);
 	return temporal;
+}
 }
