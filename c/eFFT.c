@@ -39,27 +39,58 @@ int * bitrev(int * order, unsigned int bits, int n){
 }
 
 double complex * butterfly(complex double * input, int siglen, int norm, int sign){
+	complex double tempup;
+	complex double tempdown;
+	complex double outputup;
+	complex double outputdown;
+	complex double twid;
 	complex double normalise = (complex double)norm;
 	unsigned int poww = ceil(log2(siglen));
 	int N = pow(2, poww);
 	unsigned int bits = log2(N);
 	int * order = calloc(N,sizeof(int));
 	complex double * output;
-	output = (complex double*)realloc(input, N * sizeof(complex double));
+	output = calloc(N,sizeof(complex double));
+	complex double * in;
+	//realloc 'frees' the original pointer, so have to reassign later
+	in = (complex double*)realloc(input, N * sizeof(complex double));
 	for (int i = siglen; i < N; i++){
 		//Zero Padding if required
-		output[i] = 0;
+		in[i] = 0;
 	}
 	int inc = 0;
-	complex double tempup;
-	complex double tempdown;
-	complex double outputup;
-	complex double outputdown;
-	complex double twid;
+	//First iteration uses values directly from the input
+	//Saves instruction time copying values over
+	//This can definitely be improved 
 	order = bitrev(order, bits, N);
-	for (int i = 1; i < bits + 1; i++){
+	int * w = calloc(N/2,sizeof(int));
+	for (int i = 1; i < 2; i++){
 		inc = N / pow(2, i);
-		int * w = calloc(N/2,sizeof(int));
+		
+		int incre = 0;
+		for (int j = 0; j < (N / 2); j++){
+			if ((j%inc == 0) && (j != 0)){
+				incre = (incre + inc) % (N / 2);
+			}
+			w[j] = incre;
+		}
+		incre = 0;
+		int wc = 0;
+		for (int k = 0,wc=0; k < N; k += 2,wc++){
+			tempup = in[order[k]];
+			tempdown = in[order[k + 1]];
+			twid = (complex double)(cos(2 * M_PI*w[wc] / N))+(I*sign*sin(2 * M_PI*w[wc] / N));
+			outputup = tempup + (tempdown*twid);
+			outputdown = tempup -(tempdown*twid);
+			output[order[k]] = outputup;
+			output[order[k + 1]] = outputdown;
+		}
+		order=rrotate(order,bits,N);
+	}
+	//Further iterations use the output array instead
+	//For the rest of them
+	for (int i = 2; i < bits + 1; i++){
+		inc = N / pow(2, i);
 		int incre = 0;
 		for (int j = 0; j < (N / 2); j++){
 			if ((j%inc == 0) && (j != 0)){
@@ -85,7 +116,11 @@ double complex * butterfly(complex double * input, int siglen, int norm, int sig
 	for (int p = 0; p < N; p++){
 		spectra[p] = output[order[p]]/normalise;
 	}
-
+	
+	//reallocate original pointer;
+	*input =*in;
+	//resize input back to original length;
+	input = (complex double*)realloc(in, siglen * sizeof(complex double));
 	return spectra;
 }
 
